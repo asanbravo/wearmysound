@@ -1,0 +1,59 @@
+openapi: 3.0.3
+info:
+  title: Wear My Sound API
+  version: 1.0.0
+
+paths:
+  /outfits/recommendation:
+    get:
+      operationId: getOutfitRecommendation
+      tags: [ Outfits ]
+      responses:
+        '200':
+          description: Outfit suggestion for the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutfitSuggestionDto'
+components:
+  schemas:
+    SpotifyTokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        expiresInSeconds:
+          type: integer
+        obtainedAtEpochSeconds:
+          type: integer
+    OutfitSuggestionDto:
+      type: object
+      properties:
+        style:
+          $ref: '#/components/schemas/StyleDto'
+        palette:
+          $ref: '#/components/schemas/ColorPaletteDto'
+        garments:
+          type: array
+          items:
+            $ref: '#/components/schemas/GarmentDto'
+      required: [ style, palette, garments ]
+    StyleDto:
+      type: string
+      enum: [ URBAN, CASUAL, ELEGANT ]
+    ColorPaletteDto:
+      type: object
+      properties:
+        primary: { type: string, example: '#FF5722' }
+        secondary: { type: string, example: '#FFC107' }
+        accent: { type: string, example: '#FFFFFF' }
+      required: [ primary, secondary, accent ]
+    GarmentDto:
+      type: object
+      properties:
+        category: { type: string, example: 'jacket' }
+        description: { type: string, example: 'Oversized bomber' }
+        shopLink: { type: string, format: uri }
+      required: [ category, description ]

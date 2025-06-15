@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+  wiremock:
+    image: wiremock/wiremock:3.5.2
+    container_name: wiremock-spotify
+    ports:
+      - "8081:8080"                        # 8081 host → 8080 contenedor
+    volumes:
+      - ./config_test/e2e/definitions/cucumber/src/test/resources/mocks:/home/wiremock
+    command: [ "--global-response-templating" ]
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/__admin/health" ]
+      interval: 5s
+      retries: 5
+  e2e:
+    build:
+      context: .
+      dockerfile: config_test/e2e/Dockerfile
+    container_name: e2e_tests
+    depends_on:
+      app:
+        condition: service_healthy
+      wiremock:
+        condition: service_healthy
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - APP_BASE_URL=http://app:8080/
+      - WM_HOST=wiremock-spotify      # ← nuevo
+      - WM_PORT=8080
+    command: ["bash", "-c", "./run-e2e.sh"]

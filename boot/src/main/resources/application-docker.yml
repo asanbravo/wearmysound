@@ -1,0 +1,8 @@
+spring:
+  config:
+    activate:
+      on-profile: docker      # ← se activa con SPRING_PROFILES_ACTIVE=docker
+spotify:
+  token-url: http://wiremock-spotify:8080/api/token
+  recent-tracks-url: http://wiremock-spotify:8080/v1/me/player/recently-played?limit={limit}
+  audio-features-url: http://wiremock-spotify:8080/v1/audio-features?ids={ids}

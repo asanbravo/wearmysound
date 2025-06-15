@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/v1/me/player/recently-played"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": {
+      "items": [
+        { "track": { "id": "track10", "name": "Chill One", "artists":[{"name":"LoFi Kid"}] } },
+        { "track": { "id": "track11", "name": "Chill Two", "artists":[{"name":"LoFi Kid"}] } }
+      ]
+    }
+  }
+}

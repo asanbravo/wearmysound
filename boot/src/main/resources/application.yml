@@ -1,0 +1,44 @@
+app:
+  base-url: http://127.0.0.1:8080
+external:
+  reccobeats:
+    base-url: https://api.reccobeats.com/v1
+spring:
+  application:
+    name: demo
+  profiles:
+    active: local
+  security:
+    oauth2:
+      client:
+        registration:
+          spotify:
+            client-id: 46d0d24949b445328db6b41eaa990558
+            client-secret: 4ab80ce957f648638b8e22d98c3eff8a
+            scope:
+              - user-read-recently-played
+              - user-read-private
+              - user-read-email
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/spotify"
+            authorization-grant-type: authorization_code
+            client-name: spotify
+        provider:
+          spotify:
+            authorization-uri: https://accounts.spotify.com/authorize
+            token-uri: https://accounts.spotify.com/api/token
+            user-info-uri: https://api.spotify.com/v1/me
+            user-name-attribute: id
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+spotify:
+  client-id:        46d0d24949b445328db6b41eaa990558
+  client-secret:    4ab80ce957f648638b8e22d98c3eff8a
+  redirect-uri: http://127.0.0.1:8080/callback
+  scope: user-read-recently-played
+  token-url: https://accounts.spotify.com/api/token
+  recent-tracks-url: https://api.spotify.com/v1/me/player/recently-played?limit={limit}
+  audio-features-url: https://api.spotify.com/v1/audio-features?ids={ids}
+

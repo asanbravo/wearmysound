@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/api/token"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "access_token": "A_TEST_ACCESS_TOKEN",
+      "refresh_token": "A_TEST_REFRESH_TOKEN",
+      "expires_in": 3600
+    },
+    "fixedDelayMilliseconds": 10
+  }
+}
