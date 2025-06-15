@@ -2,18 +2,21 @@ package com.example.demo.model;
 
 import lombok.Value;
 
+
+import lombok.Value;
+
+/**
+ * Modelo de dominio para características de audio.
+ */
 @Value
 public class AudioFeatures {
-
-    double tempo;   // BPM   [>0]
-    double energy;  // [0-1]
-    double valence; // [0-1]
-
-    public AudioFeatures(double tempo, double energy, double valence) {
-        if (tempo <= 0 || energy < 0 || energy > 1 || valence < 0 || valence > 1)
-            throw new IllegalArgumentException("Valores fuera de rango");
-        this.tempo   = tempo;
-        this.energy  = energy;
-        this.valence = valence;
-    }
+    double acousticness;
+    double danceability;
+    double energy;
+    double instrumentalness;
+    double liveness;
+    double loudness;
+    double speechiness;
+    double tempo;
+    double valence;
 }
