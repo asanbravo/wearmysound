@@ -15,19 +15,19 @@ import java.util.stream.Collectors;
 public class RecentTracksDto {
 
     @JsonProperty("items")
-    private List<Item> items;
+    private List<ItemDto> items;
 
-    public static RecentTracksDto of(Item... items) {
+    public static RecentTracksDto of(ItemDto... items) {
         return new RecentTracksDto(List.of(items));
     }
 
     @Getter
     @AllArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class Item {
+    public static class ItemDto {
         @JsonProperty("track") private TrackDto track;
-        public static Item of(String id, String name, String artist) {
-            return new Item(new TrackDto(id, name, List.of(new ArtistDto(artist))));
+        public static ItemDto of(String id, String name, String artist) {
+            return new ItemDto(new TrackDto(id, name, List.of(new ArtistDto(artist))));
         }
     }
 

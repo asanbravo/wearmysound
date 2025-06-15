@@ -25,12 +25,20 @@ public class RecommendOutfitUseCase {
 
         List<Track> tracks = recentTracksPort.fetchRecentTracks(userId, 20);
 
+        if (tracks.isEmpty()) {
+            throw new IllegalArgumentException("No se encontraron tracks recientes");
+        }
+
         List<String> spotifyIds = tracks.stream()
                 .map(Track::getId)
                 .toList();
 
         Map<String, AudioFeatures> featuresMap =
                 audioPort.getAudioFeatures(spotifyIds);
+
+        if (featuresMap.isEmpty()) {
+            throw new IllegalArgumentException("No se pudieron obtener features de audio");
+        }
 
         List<Track> enrichedTracks = tracks.stream()
                 .filter(t -> featuresMap.containsKey(t.getId()))

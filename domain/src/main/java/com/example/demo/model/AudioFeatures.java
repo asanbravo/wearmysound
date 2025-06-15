@@ -10,13 +10,7 @@ import lombok.Value;
  */
 @Value
 public class AudioFeatures {
-    double acousticness;
-    double danceability;
     double energy;
-    double instrumentalness;
-    double liveness;
-    double loudness;
-    double speechiness;
     double tempo;
     double valence;
 }
