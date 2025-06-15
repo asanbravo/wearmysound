@@ -5,7 +5,6 @@ import com.example.demo.model.OutfitSuggestion;
 import com.example.demo.model.Style;
 import com.example.demo.model.Track;
 import com.example.demo.port.out.RecentTracksPort;
-import com.example.demo.port.out.SpotifyTokenPort;
 import com.example.demo.service.MoodAnalyzer;
 import com.example.demo.service.OutfitRecommender;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,6 @@ import org.mockito.Mockito;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class RecommendOutfitUseCaseTest {
 

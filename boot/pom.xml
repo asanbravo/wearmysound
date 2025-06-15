@@ -62,10 +62,6 @@
             <groupId>com.example</groupId>
             <artifactId>infrastructure-rest-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>infrastructure-memory</artifactId>
-        </dependency>
 
         <!-- Lombok -->
         <dependency>

@@ -32,7 +32,6 @@
         <module>application</module>
         <module>infrastructure-rest</module>
         <module>infrastructure-rest-client</module>
-        <module>infrastructure-memory</module>
         <module>boot</module>
     </modules>
 
@@ -57,11 +56,6 @@
             <dependency>
                 <groupId>com.example</groupId>
                 <artifactId>infrastructure-rest-client</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.example</groupId>
-                <artifactId>infrastructure-memory</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

@@ -2,7 +2,6 @@ package com.example.demo.outfit;
 
 import com.example.demo.model.*;
 import com.example.demo.port.out.RecentTracksPort;
-import com.example.demo.port.out.SpotifyTokenPort;
 import com.example.demo.service.MoodAnalyzer;
 import com.example.demo.service.OutfitRecommender;
 import lombok.RequiredArgsConstructor;
