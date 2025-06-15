@@ -1,6 +1,7 @@
 package com.example.demo.outfit;
 
 import com.example.demo.model.*;
+import com.example.demo.port.out.AudioFeaturesPort;
 import com.example.demo.port.out.RecentTracksPort;
 import com.example.demo.service.MoodAnalyzer;
 import com.example.demo.service.OutfitRecommender;
@@ -8,24 +9,36 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class RecommendOutfitUseCase {
 
+
     private final RecentTracksPort   recentTracksPort;
+    private final AudioFeaturesPort  audioPort;
     private final MoodAnalyzer       moodAnalyzer;
     private final OutfitRecommender  outfitRecommender;
 
     public OutfitSuggestion execute(String userId) {
 
-        // 1. Pedir pistas recientes (el adaptador REST usará el token)
         List<Track> tracks = recentTracksPort.fetchRecentTracks(userId, 20);
 
-        // 2. Analizar mood
-        MoodAnalysisResult analysis = moodAnalyzer.analyse(tracks);
+        List<String> spotifyIds = tracks.stream()
+                .map(Track::getId)
+                .toList();
 
-        // 3. Recomendar outfit
+        Map<String, AudioFeatures> featuresMap =
+                audioPort.getAudioFeatures(spotifyIds);
+
+        List<Track> enrichedTracks = tracks.stream()
+                .filter(t -> featuresMap.containsKey(t.getId()))
+                .map(t -> t.withAudioFeatures(featuresMap.get(t.getId())))
+                .toList();
+
+        MoodAnalysisResult analysis = moodAnalyzer.analyse(enrichedTracks);
+
         return outfitRecommender.recommend(analysis);
     }
 }

@@ -16,4 +16,11 @@ public class Track {
     private final String artist;
 
     private final AudioFeatures audio; // Value-Object
+
+    /**
+     * Devuelve una copia de este Track con las AudioFeatures proporcionadas.
+     */
+    public Track withAudioFeatures(AudioFeatures audioFeatures) {
+        return new Track(this.id, this.title, this.artist, audioFeatures);
+    }
 }

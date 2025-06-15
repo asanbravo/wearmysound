@@ -6,13 +6,10 @@ import com.example.demo.reccobeats.dto.AudioFeaturesDto;
 import com.example.demo.reccobeats.dto.TrackInfoDto;
 import com.example.demo.reccobeats.dto.TrackSearchResponse;
 import com.example.demo.reccobeats.mapper.ReccobeatsMapper;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,13 +19,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
 public class ReccobeatsAudioFeaturesImpl implements AudioFeaturesPort {
+
     private final RestTemplate restTemplate;
     private final String baseUrl;
     private final String apiKey;
     private final ReccobeatsMapper mapper;
 
+    @Autowired
     public ReccobeatsAudioFeaturesImpl(
             RestTemplateBuilder builder,
             @Value("${reccobeats.api.base-url}") String baseUrl,
@@ -43,7 +41,7 @@ public class ReccobeatsAudioFeaturesImpl implements AudioFeaturesPort {
 
     @Override
     public Map<String, AudioFeatures> getAudioFeatures(List<String> spotifyIds) {
-        String uri =  UriComponentsBuilder
+        String uri = UriComponentsBuilder
                 .fromUriString(baseUrl + "/track")
                 .queryParam("ids", String.join(",", spotifyIds))
                 .toUriString();
@@ -55,18 +53,17 @@ public class ReccobeatsAudioFeaturesImpl implements AudioFeaturesPort {
         HttpEntity<?> req = new HttpEntity<>(headers);
 
         ResponseEntity<TrackSearchResponse> resp = restTemplate.exchange(
-                uri,
-                HttpMethod.GET,
-                req,
-                TrackSearchResponse.class
-        );
+                uri, HttpMethod.GET, req, TrackSearchResponse.class);
 
         List<TrackInfoDto> found = resp.getBody().getContent();
 
+        // Filtramos nulos y resolvemos posibles duplicados
         return found.stream()
+                .filter(t -> t.getSpotifyId() != null)                         // descartamos nulls
                 .collect(Collectors.toMap(
                         TrackInfoDto::getSpotifyId,
-                        t -> fetchFeatures(t.getId())
+                        t -> fetchFeatures(t.getId()),
+                        (existing, duplicate) -> existing                           // en caso de clave repetida, mantenemos la primera
                 ));
     }
 

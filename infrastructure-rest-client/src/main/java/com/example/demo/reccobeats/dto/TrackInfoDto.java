@@ -1,6 +1,7 @@
 package com.example.demo.reccobeats.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -9,14 +10,20 @@ import lombok.Data;
  */
 @Data
 public class TrackInfoDto {
-    /**
-     * ID interno de Reccobeats (UUID)
-     */
+    /** UUID interno de Reccobeats */
     private String id;
 
+    /** Viene en la respuesta como la URL completa de Spotify */
+    private String href;
+
     /**
-     * ID original de Spotify utilizado para la búsqueda
+     * Extrae el Spotify ID de la URL, p.ej.
+     * https://open.spotify.com/track/5SWJyohWGUXsmpqkHVuozw
      */
-    @JsonProperty("spotifyId")
-    private String spotifyId;
+    @JsonIgnore
+    public String getSpotifyId() {
+        if (href == null) return null;
+        String[] parts = href.split("/");
+        return parts[parts.length - 1];
+    }
 }

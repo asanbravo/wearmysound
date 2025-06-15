@@ -1,7 +1,7 @@
 app:
   base-url: http://127.0.0.1:8080
-external:
-  reccobeats:
+reccobeats:
+  api:
     base-url: https://api.reccobeats.com/v1
 spring:
   application:
