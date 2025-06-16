@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/track",
+    "queryParameters": {
+      "ids": {
+        "matches": ".*id3.*id4.*"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"content\":[{\"id\":\"recco-id3\",\"trackTitle\":\"ChillSong1\",\"artists\":[{\"name\":\"Artist3\"}],\"durationMs\":180000,\"isrc\":\"ISRC123\",\"ean\":\"EAN123\",\"upc\":\"UPC123\",\"href\":\"https://open.spotify.com/track/id3\",\"availableCountries\":\"ES,US\",\"popularity\":70},{\"id\":\"recco-id4\",\"trackTitle\":\"ChillSong2\",\"artists\":[{\"name\":\"Artist4\"}],\"durationMs\":200000,\"isrc\":\"ISRC456\",\"ean\":\"EAN456\",\"upc\":\"UPC456\",\"href\":\"https://open.spotify.com/track/id4\",\"availableCountries\":\"ES,US\",\"popularity\":65}]}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

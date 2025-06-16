@@ -1,5 +1,8 @@
 package com.demo.stepdefs;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import io.cucumber.java.Before;
@@ -14,20 +17,20 @@ public class WireMockImportHook {
     private static final Path COMMON_DIR = MOCKS_ROOT.resolve("common");
 
     private final WireMock wm;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public WireMockImportHook() {
         String host = System.getenv().getOrDefault("WM_HOST", "localhost");
-        int    port = Integer.parseInt(System.getenv().getOrDefault("WM_PORT", "8081"));
+        int port = Integer.parseInt(System.getenv().getOrDefault("WM_PORT", "8081"));
         wm = new WireMock(host, port);
     }
 
-    /*──────────── hook ────────────*/
     @Before
     public void loadMappings(Scenario scenario) {
 
-        wm.resetMappings();          // limpia todo
+        wm.resetMappings(); // limpia todo
 
-        importDir(COMMON_DIR);       // mappings comunes
+        importDir(COMMON_DIR); // mappings comunes
 
         scenario.getSourceTagNames().stream()
                 .filter(t -> t.startsWith("@ID-"))
@@ -37,19 +40,17 @@ public class WireMockImportHook {
                 .ifPresent(this::importDir);
     }
 
-    /*──────────── helpers ────────────*/
     private void importDir(Path dir) {
-        System.out.println("WireMock: importing from {}" + dir.toAbsolutePath());
+        System.out.println("WireMock: importing from " + dir.toAbsolutePath());
         try (var paths = Files.list(dir)) {
             paths.filter(p -> p.toString().endsWith(".json"))
-                    .filter(this::looksLikeMapping)      // solo JSON con request+response
+                    .filter(this::looksLikeMapping)
                     .forEach(this::importStub);
         } catch (Exception ex) {
             throw new RuntimeException("Error importing stubs from " + dir, ex);
         }
     }
 
-    /** descarta archivos que son solo cuerpos de respuesta */
     private boolean looksLikeMapping(Path p) {
         try {
             String json = Files.readString(p);
@@ -63,20 +64,24 @@ public class WireMockImportHook {
         try {
             String json = Files.readString(file, StandardCharsets.UTF_8);
 
-            /* si el stub lleva id no-UUID, elimínalo para que WireMock genere uno */
-            if (json.contains("\"id\"") && !json.matches(".*[a-fA-F0-9\\-]{36}.*")) {
-                json = json.replaceFirst("\"id\"\\s*:\\s*\"[^\"]+\",?", "");
+            JsonNode root = mapper.readTree(json);
+
+            // Si hay un campo "id" en la raíz y no es UUID, lo quitamos
+            if (root.has("id")) {
+                String id = root.get("id").asText();
+                if (!id.matches("[a-fA-F0-9\\-]{36}")) {
+                    ((ObjectNode) root).remove("id");
+                    json = mapper.writeValueAsString(root);
+                }
             }
 
             StubMapping stub = StubMapping.buildFrom(json);
             wm.register(stub);
 
-            // ←────── Mensaje de log solicitado
-            System.out.println("WireMock: imported stub '{}'" + file.toAbsolutePath());
+            System.out.println("WireMock: imported stub '" + file.toAbsolutePath() + "'");
 
         } catch (Exception ex) {
-            throw new RuntimeException(
-                    "Error importing stub from file: " + file, ex);
+            throw new RuntimeException("Error importing stub from file: " + file, ex);
         }
     }
 }

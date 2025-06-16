@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/me"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "id": "user-id-123",
+      "display_name": "Mock User",
+      "email": "mockuser@example.com"
+    }
+  }
+}

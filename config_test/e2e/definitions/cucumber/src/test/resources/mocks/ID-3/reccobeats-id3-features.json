@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/track/recco-id3/audio-features"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"id\":\"recco-id3\",\"tempo\":90.0,\"valence\":0.5,\"energy\":0.4}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

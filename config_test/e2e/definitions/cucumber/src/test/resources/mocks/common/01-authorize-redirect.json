@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/authorize"
+  },
+  "response": {
+    "status": 302,
+    "headers": {
+
+      "Location": "http://localhost:8080/login/oauth2/code/spotify?code=test-code&state=test-state"
+    }
+  }
+}

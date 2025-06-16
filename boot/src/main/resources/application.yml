@@ -38,7 +38,4 @@ spotify:
   client-secret:    4ab80ce957f648638b8e22d98c3eff8a
   redirect-uri: http://127.0.0.1:8080/callback
   scope: user-read-recently-played
-  token-url: https://accounts.spotify.com/api/token
   recent-tracks-url: https://api.spotify.com/v1/me/player/recently-played?limit={limit}
-  audio-features-url: https://api.spotify.com/v1/audio-features?ids={ids}
-

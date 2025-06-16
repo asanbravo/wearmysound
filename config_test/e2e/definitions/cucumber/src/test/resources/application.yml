@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local                # perfil por defecto cuando lanzas desde IDE
+    active: docker                # perfil por defecto cuando lanzas desde IDE
 
 ---
 
@@ -18,4 +18,4 @@ spring:
     activate:
       on-profile: docker
 test:
-  base-url: http://app:8080   # nombre del servicio en docker-compose
+  base-url: http://localhost:8080   # nombre del servicio en docker-compose

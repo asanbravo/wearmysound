@@ -7,7 +7,7 @@
         <groupId>com.example</groupId>
         <artifactId>demo</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../..</relativePath> <!-- ajusta si es necesario -->
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>domain</artifactId>

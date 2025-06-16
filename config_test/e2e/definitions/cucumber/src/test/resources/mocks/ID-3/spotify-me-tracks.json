@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/v1/me/player/recently-played"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"items\":[{\"track\":{\"id\":\"id3\",\"name\":\"ChillSong1\",\"artists\":[{\"name\":\"Artist3\"}]}},{\"track\":{\"id\":\"id4\",\"name\":\"ChillSong2\",\"artists\":[{\"name\":\"Artist4\"}]}}]}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

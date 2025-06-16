@@ -29,7 +29,11 @@ public class OutfitRecommendationController implements OutfitsApi {
 
     @Override
     public ResponseEntity<OutfitSuggestionDto> getOutfitRecommendation() {
+        System.out.println("hellooooo");
+
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        System.out.println("userId: " + userId);
 
         OutfitSuggestion outfit = useCase.execute(userId);
         return ResponseEntity.ok(mapper.toDto(outfit));

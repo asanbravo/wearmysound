@@ -1,8 +1,36 @@
+logging:
+  level:
+    org.springframework.security.oauth2.client.token: TRACE
+    org.springframework.web.client.RestTemplate: TRACE
+    org.springframework.security.oauth2.client.registration: DEBUG
+    org.springframework.security.oauth2.client.endpoint: TRACE
 spring:
   config:
     activate:
-      on-profile: docker      # ← se activa con SPRING_PROFILES_ACTIVE=docker
+      on-profile: docker
+  security:
+    oauth2:
+      client:
+        registration:
+          spotify:
+            client-id: test-client-id
+            client-secret: test-client-secret
+            provider: spotify
+            redirect-uri: "http://localhost:8080/login/oauth2/code/spotify"
+            authorization-grant-type: authorization_code
+            scope:
+              - user-read-email
+              - user-read-private
+            user-name-attribute: id   # ✅ Este es el correcto
+        provider:
+          spotify:
+            authorization-uri: http://localhost:8081/authorize
+            token-uri: http://localhost:8081/api/token
+            user-info-uri: http://localhost:8081/me
+      resourceserver:
+        enabled: false
 spotify:
-  token-url: http://wiremock-spotify:8080/api/token
-  recent-tracks-url: http://wiremock-spotify:8080/v1/me/player/recently-played?limit={limit}
-  audio-features-url: http://wiremock-spotify:8080/v1/audio-features?ids={ids}
+  recent-tracks-url: http://localhost:8081/v1/me/player/recently-played?limit={limit}
+reccobeats:
+  api:
+    base-url: http://localhost:8081
