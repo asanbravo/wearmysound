@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 
 @Configuration
-@Profile("docker")
+@Profile({"docker","local"})
 public class OAuth2TestConfig {
 
     private static final String FIXED_STATE = "test-state";

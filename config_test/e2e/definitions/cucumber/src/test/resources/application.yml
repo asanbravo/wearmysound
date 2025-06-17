@@ -18,4 +18,4 @@ spring:
     activate:
       on-profile: docker
 test:
-  base-url: http://localhost:8080   # nombre del servicio en docker-compose
+  base-url: http://spring-app:8080   # nombre del servicio en docker-compose

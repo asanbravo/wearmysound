@@ -6,6 +6,10 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: spring-app
+    networks:
+      default:
+        aliases:
+          - spring-app
     ports:
       - "8080:8080"
     environment:
@@ -24,6 +28,10 @@ services:
     volumes:
       - ./config_test/e2e/definitions/cucumber/src/test/resources/mocks:/home/wiremock
     command: [ "--global-response-templating" ]
+    networks:
+      default:
+        aliases:
+          - wiremock-spotify
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/__admin/health" ]
       interval: 5s
@@ -40,7 +48,10 @@ services:
         condition: service_healthy
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - APP_BASE_URL=http://app:8080/
-      - WM_HOST=wiremock-spotify      # ← nuevo
+      - APP_BASE_URL=http://spring-app:8080
+      - WM_HOST=wiremock-spotify
       - WM_PORT=8080
+      - TEST_APP_BASE_URL=http://spring-app:8080
+      - TEST_WM_BASE_URL=http://wiremock-spotify:8080
+
     command: ["bash", "-c", "./run-e2e.sh"]

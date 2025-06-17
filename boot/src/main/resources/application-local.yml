@@ -1,0 +1,17 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  security:
+    oauth2:
+      client:
+        provider:
+          spotify:
+            authorization-uri: http://localhost:8081/authorize
+            token-uri:         http://localhost:8081/api/token
+            user-info-uri:     http://localhost:8081/me
+spotify:
+  recent-tracks-url: http://localhost:8081/v1/me/player/recently-played?limit={limit}
+reccobeats:
+  api:
+    base-url: http://localhost:8081

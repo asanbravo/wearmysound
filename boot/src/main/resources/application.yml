@@ -32,7 +32,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health
+        include: env, health, info, metrics
 spotify:
   client-id:        46d0d24949b445328db6b41eaa990558
   client-secret:    4ab80ce957f648638b8e22d98c3eff8a
